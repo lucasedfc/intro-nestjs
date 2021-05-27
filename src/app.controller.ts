@@ -7,6 +7,16 @@ export class AppController {
 
   @Get()
   getHello(): string {
-    return this.appService.getHello();
+    return 'Hi there!';
+  }
+
+  @Get('new')
+  newEndpoint(): string {
+    return 'New endpoint!';
+  }
+
+  @Get('/route/')
+  hello() {
+    return 'Route with /slash/';
   }
 }
