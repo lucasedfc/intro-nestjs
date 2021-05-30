@@ -6,24 +6,26 @@ import {
   Param,
   Post,
   Put,
-  Query,
   HttpCode,
   HttpStatus,
-  Res,
+  ParseIntPipe,
 } from '@nestjs/common';
-import { Response } from 'express';
+import { ProductsService } from '../services/products.service';
 
 @Controller('products')
 export class ProductsController {
+  constructor(private productService: ProductsService) {}
   @Get('')
-  getProducts(
-    @Query('limit') limit = 100,
-    @Query('offset') offset = 0,
-    @Query('brand') brand: string,
-  ) {
-    return {
-      message: `products: limit => ${limit} offset => ${offset} brand => ${brand}`,
-    };
+  // eslint-disable-next-line prettier/prettier
+  getProducts()
+ /*  @Query('limit') limit = 100, */
+  /*  @Query('offset') offset = 0, */
+  /*  @Query('brand') brand: string, */
+  {
+    // return {
+    //   message: `products: limit => ${limit} offset => ${offset} brand => ${brand}`,
+    // };
+    return this.productService.findAll();
   }
 
   @Get('filter')
@@ -35,36 +37,33 @@ export class ProductsController {
 
   @Get(':productId')
   @HttpCode(HttpStatus.ACCEPTED)
-  getOne(@Res() response: Response, @Param('productId') productId: string) {
-    response.status(200).send({
-      message: `product with id ${productId}`,
-    });
+  getOne(@Param('productId', ParseIntPipe) productId: number) {
+    // Express Way
+    // response.status(200).send({
+    //   message: `product with id ${productId}`,
+    // });
     // return {
     //   message: `product with id ${productId}`,
     // };
+    return this.productService.findOne(productId);
   }
 
   @Post()
   create(@Body() payload: any) {
-    return {
-      message: 'Create action',
-      payload,
-    };
+    // return {
+    //   message: 'Create action',
+    //   payload,
+    // };
+    return this.productService.create(payload);
   }
 
   @Put(':id')
   update(@Param('id') id: number, @Body() payload: any) {
-    return {
-      id,
-      payload,
-    };
+    return this.productService.update(id, payload);
   }
 
   @Delete(':id')
   delete(@Param('id') id: number) {
-    return {
-      id,
-      message: 'Product Deleted',
-    };
+    return this.productService.delete(id);
   }
 }
