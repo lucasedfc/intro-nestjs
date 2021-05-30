@@ -8,17 +8,17 @@ import {
   Put,
   HttpCode,
   HttpStatus,
-  ParseIntPipe,
+  //ParseIntPipe,
 } from '@nestjs/common';
 import { ProductsService } from '../services/products.service';
+import { ParseIntPipe } from '../shared/parse-int.pipe';
 
 @Controller('products')
 export class ProductsController {
   constructor(private productService: ProductsService) {}
   @Get('')
   // eslint-disable-next-line prettier/prettier
-  getProducts()
- /*  @Query('limit') limit = 100, */
+  getProducts() /*  @Query('limit') limit = 100, */
   /*  @Query('offset') offset = 0, */
   /*  @Query('brand') brand: string, */
   {
