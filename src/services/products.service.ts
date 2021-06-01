@@ -29,8 +29,6 @@ export class ProductsService {
   }
 
   create(payload: CreateProductDto) {
-    console.log('payload', payload);
-
     this.counterId++;
     const newProduct = {
       id: this.counterId,
