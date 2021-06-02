@@ -4,40 +4,41 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Post,
   Put,
 } from '@nestjs/common';
+import { CreateOrderDto, UpdateOrderDto } from 'src/dtos/orders.dto';
+import { OrdersService } from 'src/services/orders.service';
 
 @Controller('orders')
 export class OrdersController {
+  constructor(private orderService: OrdersService) {}
   @Get(':orderId')
-  getOne(@Param('orderId') orderId: string) {
-    return {
-      message: `Order with id ${orderId}`,
-    };
+  getOne(@Param('orderId', ParseIntPipe) orderId: number) {
+    return this.orderService.findOne(orderId);
+  }
+
+  @Get()
+  getAll() {
+    return this.orderService.findAll();
   }
 
   @Post()
-  create(@Body() payload: any) {
-    return {
-      message: 'Order Created',
-      payload,
-    };
+  create(@Body() payload: CreateOrderDto) {
+    return this.orderService.create(payload);
   }
 
   @Put(':id')
-  update(@Param('id') id: number, @Body() payload: any) {
-    return {
-      id,
-      payload,
-    };
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() payload: UpdateOrderDto,
+  ) {
+    return this.orderService.update(id, payload);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: number) {
-    return {
-      id,
-      message: 'Order Deleted',
-    };
+  delete(@Param('id', ParseIntPipe) id: number) {
+    return this.orderService.delete(id);
   }
 }
