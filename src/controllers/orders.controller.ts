@@ -4,7 +4,6 @@ import {
   Delete,
   Get,
   Param,
-  ParseIntPipe,
   Post,
   Put,
 } from '@nestjs/common';
@@ -15,7 +14,7 @@ import { OrdersService } from 'src/services/orders.service';
 export class OrdersController {
   constructor(private orderService: OrdersService) {}
   @Get(':orderId')
-  getOne(@Param('orderId', ParseIntPipe) orderId: number) {
+  getOne(@Param('orderId') orderId: string) {
     return this.orderService.findOne(orderId);
   }
 
@@ -30,15 +29,12 @@ export class OrdersController {
   }
 
   @Put(':id')
-  update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() payload: UpdateOrderDto,
-  ) {
+  update(@Param('id') id: string, @Body() payload: UpdateOrderDto) {
     return this.orderService.update(id, payload);
   }
 
   @Delete(':id')
-  delete(@Param('id', ParseIntPipe) id: number) {
+  delete(@Param('id') id: string) {
     return this.orderService.delete(id);
   }
 }

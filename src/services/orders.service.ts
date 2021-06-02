@@ -1,22 +1,22 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateOrderDto, UpdateOrderDto } from 'src/dtos/orders.dto';
 import { Order } from 'src/entities/order.entity';
+import { nanoid } from 'nanoid';
 
 @Injectable()
 export class OrdersService {
   private counterId = 1;
   private orders: Order[] = [
     {
-      id: 1,
+      id: nanoid(),
       productId: 1,
       price: 312,
     },
   ];
 
   create(payload: CreateOrderDto) {
-    this.counterId++;
     const newOrder = {
-      id: this.counterId,
+      id: nanoid(),
       ...payload,
     };
     this.orders.push(newOrder);
@@ -27,7 +27,7 @@ export class OrdersService {
     return this.orders;
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     const order = this.orders.find((item) => item.id === id);
 
     if (!order) {
@@ -36,7 +36,7 @@ export class OrdersService {
     return order;
   }
 
-  update(id: number, payload: UpdateOrderDto) {
+  update(id: string, payload: UpdateOrderDto) {
     const order = this.findOne(id);
     if (order) {
       const index = this.orders.findIndex((item) => item.id === id);
@@ -49,7 +49,7 @@ export class OrdersService {
     }
   }
 
-  delete(id: number) {
+  delete(id: string) {
     const order = this.findOne(id);
     if (order) {
       const index = this.orders.findIndex((item) => item.id === id);

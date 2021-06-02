@@ -1,5 +1,5 @@
 export class Order {
-  id: number;
+  id: string;
   productId: number;
   price: number;
 }
